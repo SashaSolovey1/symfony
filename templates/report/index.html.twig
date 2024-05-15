@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Report{% endblock %}
+
+{% block body %}
+    <h1>Report</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Code</th>
+                <th>Quantity</th>
+                <th>Revenue</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for code, types in groupedData %}
+                <tr>
+                    <td rowspan="{{ types|length + 1 }}">{{ code }}</td>
+                    <td rowspan="{{ types|length + 1 }}">
+                        {% set totalQuantity = 0 %}
+                        {% set totalRevenue = 0 %}
+                        {% for type, data in types %}
+                            {% set totalQuantity = totalQuantity + data.totalProducts %}
+                            {% set totalRevenue = totalRevenue + data.totalRevenue %}
+                        {% endfor %}
+                        {{ totalQuantity }}шт
+                    </td>
+                    <td rowspan="{{ types|length + 1 }}">{{ totalRevenue }}грн</td>
+                </tr>
+                {% for type, data in types %}
+                    <tr>
+                        <td>{{ type }}</td>
+                        <td>{{ data.totalProducts }}шт</td>
+                        <td>{{ data.totalRevenue }}грн</td>
+                    </tr>
+                {% endfor %}
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
+

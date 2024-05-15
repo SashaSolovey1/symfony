@@ -1,0 +1,47 @@
+{# templates/product/index.html.twig #}
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Products{% endblock %}
+
+{% block body %}
+    <h1>Products</h1>
+<a href="/report">інформація</a>
+    <table>
+        <thead>
+            <tr>
+                <th><a href="{{ path('products', {'sort_field': 'id', 'sort_order': (sortField == 'id' and sortOrder == 'ASC') ? 'DESC' : 'ASC'}) }}">ID</a></th>
+                <th><a href="{{ path('products', {'sort_field': 'code', 'sort_order': (sortField == 'code' and sortOrder == 'ASC') ? 'DESC' : 'ASC'}) }}">Code</a></th>
+                <th><a href="{{ path('products', {'sort_field': 'name', 'sort_order': (sortField == 'name' and sortOrder == 'ASC') ? 'DESC' : 'ASC'}) }}">Name</a></th>
+                <th><a href="{{ path('products', {'sort_field': 'type', 'sort_order': (sortField == 'type' and sortOrder == 'ASC') ? 'DESC' : 'ASC'}) }}">Type</a></th>
+                <th><a href="{{ path('products', {'sort_field': 'price', 'sort_order': (sortField == 'price' and sortOrder == 'ASC') ? 'DESC' : 'ASC'}) }}">Price</a></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for product in products %}
+                <tr>
+                    <td>{{ product.getId() }}</td>
+                    <td>{{ product.getCode() }}</td>
+                    <td>{{ product.getName() }}</td>
+                    <td>{{ product.getType() }}</td>
+                    <td>{{ product.getPrice() }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    {# Пагинация #}
+    {% if totalProducts > perPage %}
+        <nav aria-label="Page navigation">
+            <ul class="pagination">
+                {% set totalPages = (totalProducts / perPage)|round(0, 'ceil') %}
+                {% for page in 1..totalPages %}
+                    <li class="page-item {% if page == currentPage %}active{% endif %}">
+                        <a class="page-link" href="{{ path('products', {'page': page, 'sort_field': sortField, 'sort_order': sortOrder}) }}">{{ page }}</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </nav>
+    {% endif %}
+{% endblock %}
+
